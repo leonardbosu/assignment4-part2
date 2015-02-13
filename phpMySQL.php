@@ -9,7 +9,7 @@ echo '<!DOCTYPE html>
 </head>
 <body>';
 
-echo 'This is a test<br><br>';
+echo 'This is a test<br><br><hr><br>';
 
 ?>
 
@@ -22,7 +22,7 @@ echo '	<form action="upload.php" method="GET">
 		Category: <input type="text" name="category"><br>
 		Length: <input type="text" name="length"><br>
 		<input type="submit" value="Add Video">
-		</form>';
+		</form><br> <hr> <br>';
 
 
 ?>
@@ -59,10 +59,17 @@ $resultRented = null;
 
 $stmt->bind_result($resultName, $resultCategory, $resultLength, $resultRented);
 
+echo '<table border="1">
+		<tr><th> Name <th> Category <th> Length <th> Rented <th> Rent <th> Delete';
+
 while($stmt->fetch())
 {
-	echo $resultName . $resultCategory . $resultLength . $resultRented;
+	echo '<tr><td>' . $resultName . '<td>' . $resultCategory . '<td>'
+	. $resultLength . '<td>' . $resultRented . '<td><form><input type="submit" value="Rent"></form>'
+	. '<td><form><input type="submit" value="Delete"></form>';
 }
+
+echo '</table>';
 
 $stmt->close();
 
