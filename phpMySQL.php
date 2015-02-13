@@ -13,6 +13,20 @@ echo 'This is a test<br><br>';
 
 ?>
 
+<?php 
+//form html
+
+echo '	<form action="upload.php" method="GET">
+		<legend> <ADD A VIDEO </legend><br>
+		Name: <input type="text" name="name"><br>
+		Category: <input type="text" name="category"><br>
+		Length: <input type="text" name="length"><br>
+		<input type="submit" value="Add Video">
+		</form>';
+
+
+?>
+
 <?php
 
 //db connection
@@ -22,6 +36,35 @@ if(!$mysqli || $mysqli->connect_errno)
 {
 	echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
+
+if (!($stmt = $mysqli->prepare("SELECT name, category, length, rented FROM videoInventory")))
+{
+	echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+
+/*if (!$stmt->bind_param("ssi", $newName, $newCategory, $newLength))
+{
+	echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
+}*/
+
+if (!$stmt->execute())
+{
+	echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+$resultName = null;
+$resultCategory = null;
+$resultLength = null;
+$resultRented = null;
+
+$stmt->bind_result($resultName, $resultCategory, $resultLength, $resultRented);
+
+while($stmt->fetch())
+{
+	echo $resultName . $resultCategory . $resultLength . $resultRented;
+}
+
+$stmt->close();
 
 ?>
 
