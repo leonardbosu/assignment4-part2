@@ -64,9 +64,17 @@ echo '<table border="1">
 
 while($stmt->fetch())
 {
+	if($resultRented == 1)
+	{
+		$resultRented = 'checked out';
+	}
+	else
+	{
+		$resultRented = "available";
+	}
 	echo '<tr><td>' . $resultName . '<td>' . $resultCategory . '<td>'
-	. $resultLength . '<td>' . $resultRented . '<td><form><input type="submit" value="Rent"></form>'
-	. '<td><form><input type="submit" value="Delete"></form>';
+	. $resultLength . '<td>' . $resultRented . '<td><form method="GET" action="upload.php"><input type="hidden" name="rentName" value ="' . $resultName . '"><input type="submit" value="Rent / Return"></form>'
+	. '<td><form method="GET" action="upload.php"> <input type="hidden" name="delName" value ="' . $resultName .'"> <input type="submit" value="Delete"></form>';
 }
 
 echo '</table>';
