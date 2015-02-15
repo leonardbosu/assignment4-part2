@@ -5,42 +5,82 @@
 
 if ($_GET["name"] == null && $_GET["delName"] == null && $_GET["rentName"] == null)
 {
-	echo 'Must enter video name';
+	echo 'Error: Must enter video name! <br><br>';
+	echo 'Click <a href="phpMySQL.php"> HERE </a> to return.';
 }
 else if ($_GET["name"] != null)
 {
-	$newName = $_GET['name'];
-	$newCategory = $_GET['category'];
-	$newLength = $_GET['length'];
-
-	//echo $newName . $newCategory . $newLength; //debug
-
-	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
-
-	if(!$mysqli || $mysqli->connect_errno)
+	if ( $_GET["length"] == null)
 	{
-		echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
-	}
+		$newName = $_GET['name'];
+		$newCategory = $_GET['category'];
+		$newLength = $_GET['length'];
 
-	if (!($stmt = $mysqli->prepare("INSERT INTO videoInventory (name, category, length) VALUES (?,?,?)")))
+		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+
+		if(!$mysqli || $mysqli->connect_errno)
+		{
+			echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
+		}
+
+		if (!($stmt = $mysqli->prepare("INSERT INTO videoInventory (name, category, length) VALUES (?,?,?)")))
+		{
+			echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+		}
+
+		if (!$stmt->bind_param("ssi", $newName, $newCategory, $newLength))
+		{
+			echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
+		}
+
+		if (!$stmt->execute())
+		{
+			echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+
+		$stmt->close();
+
+		header('Location: http://web.engr.oregonstate.edu/~leonardb/PastAssignments/Assignment4-part2/phpMySQL.php');
+	}
+	else if (!is_numeric($_GET["length"]) || $_GET["length"] < 0)
 	{
-		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+		echo 'Error: Length must be a positive number! <br><br>';
+		echo 'Click <a href="phpMySQL.php"> HERE </a> to return.';
 	}
-
-	if (!$stmt->bind_param("ssi", $newName, $newCategory, $newLength))
+	else
 	{
-		echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
+		$newName = $_GET['name'];
+		$newCategory = $_GET['category'];
+		$newLength = $_GET['length'];
+
+		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+
+		if(!$mysqli || $mysqli->connect_errno)
+		{
+			echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
+		}
+
+		if (!($stmt = $mysqli->prepare("INSERT INTO videoInventory (name, category, length) VALUES (?,?,?)")))
+		{
+			echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+		}
+
+		if (!$stmt->bind_param("ssi", $newName, $newCategory, $newLength))
+		{
+			echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
+		}
+
+		if (!$stmt->execute())
+		{
+			echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+
+		$stmt->close();
+
+		header('Location: http://web.engr.oregonstate.edu/~leonardb/PastAssignments/Assignment4-part2/phpMySQL.php');
 	}
-
-	if (!$stmt->execute())
-	{
-		echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-	}
-
-	$stmt->close();
-
-	header('Location: http://web.engr.oregonstate.edu/~leonardb/PastAssignments/Assignment4-part2/phpMySQL.php');
 }
+
 
 if ($_GET["delName"] != null)
 {
