@@ -16,7 +16,7 @@ else if ($_GET["name"] != null)
 		$newCategory = $_GET['category'];
 		$newLength = $_GET['length'];
 
-		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 		if(!$mysqli || $mysqli->connect_errno)
 		{
@@ -53,7 +53,7 @@ else if ($_GET["name"] != null)
 		$newCategory = $_GET['category'];
 		$newLength = $_GET['length'];
 
-		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+		$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 		if(!$mysqli || $mysqli->connect_errno)
 		{
@@ -86,7 +86,7 @@ if ($_GET["delName"] != null)
 {
 	$delName = $_GET["delName"];
 
-	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 	if(!$mysqli || $mysqli->connect_errno)
 	{
@@ -117,7 +117,7 @@ if ($_GET["rentName"] != null)
 {
 	$rentName = $_GET["rentName"];
 
-	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 	if(!$mysqli || $mysqli->connect_errno)
 	{
@@ -147,7 +147,7 @@ if ($_GET["rentName"] != null)
 if ($_GET["deleteAll"] != null)
 {
 	
-	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 	if(!$mysqli || $mysqli->connect_errno)
 	{

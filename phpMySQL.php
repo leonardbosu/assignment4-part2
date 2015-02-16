@@ -42,7 +42,7 @@ else
 
 
 //open db connection
-$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","password", "leonardb-db");
 
 if(!$mysqli || $mysqli->connect_errno)
 {
