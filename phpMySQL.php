@@ -9,25 +9,34 @@ echo '<!DOCTYPE html>
 </head>
 <body>';
 
-echo 'This is a test<br><br><hr><br>';
+echo 'Video Inventory<br><br><hr><br>';
 
 ?>
 
 <?php 
-//form html
+//html tags for add video form
 
 echo '	<form action="upload.php" method="GET">
-		<legend> <ADD A VIDEO </legend><br>
 		Name: <input type="text" name="name"><br>
 		Category: <input type="text" name="category"><br>
 		Length: <input type="text" name="length"><br>
 		<input type="submit" value="Add Video">
-		</form><br> <hr> <br>';
+		</form><br><br> <hr> <br>';
 
 
 ?>
 
 <?php
+//filter variable
+if ($_GET["filter"] != null)
+{
+	$setFilter = $_GET["filter"];
+}
+else
+{
+	$setFilter = "ALL";
+}
+
 
 //db connection
 $mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
@@ -37,15 +46,61 @@ if(!$mysqli || $mysqli->connect_errno)
 	echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 
-if (!($stmt = $mysqli->prepare("SELECT name, category, length, rented FROM videoInventory")))
+// sql query for dropdown filter
+
+if (!($stmt = $mysqli->prepare("SELECT category FROM videoInventory")))
 {
 	echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
 }
 
-/*if (!$stmt->bind_param("ssi", $newName, $newCategory, $newLength))
+if (!$stmt->execute())
 {
-	echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
-}*/
+	echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+$resultFilter = null;
+
+$stmt->bind_result($resultFilter);
+
+//dropdown filter
+
+echo '<form method="GET" action="phpMySQL.php"> <select name="filter"><option selected> ALL </option>';
+while($stmt->fetch())
+{
+	echo '<option>' . $resultFilter . '</option>';
+}
+
+echo '</select><input type="submit" value="FILTER"></form><br>';
+
+$stmt->close();
+
+//sql query for data table
+
+if($setFilter == "ALL")
+{
+
+	if (!($stmt = $mysqli->prepare("SELECT name, category, length, rented FROM videoInventory")))
+	{
+		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+	}
+
+}
+else
+{
+
+	if (!($stmt = $mysqli->prepare("SELECT name, category, length, rented FROM videoInventory WHERE category = ?")))
+	{
+		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+	}
+
+
+	if (!$stmt->bind_param("s", $setFilter))
+	{
+		echo "Binding parameters failed: (" . $stmt-errno . ") " . $stmt->error;
+	}
+
+}
+
 
 if (!$stmt->execute())
 {
@@ -84,6 +139,7 @@ $stmt->close();
 ?>
 
 <?php
+//close html tags
 echo '</body>
 </html>';
 
