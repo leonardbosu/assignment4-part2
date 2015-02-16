@@ -3,7 +3,7 @@
 //echo 'testing';
 
 
-if ($_GET["name"] == null && $_GET["delName"] == null && $_GET["rentName"] == null)
+if ($_GET["name"] == null && $_GET["delName"] == null && $_GET["rentName"] == null && $_GET["deleteAll"] == null)
 {
 	echo 'Error: Must enter video name! <br><br>';
 	echo 'Click <a href="phpMySQL.php"> HERE </a> to return.';
@@ -144,6 +144,30 @@ if ($_GET["rentName"] != null)
 	header('Location: http://web.engr.oregonstate.edu/~leonardb/PastAssignments/Assignment4-part2/phpMySQL.php');
 }
 
+if ($_GET["deleteAll"] != null)
+{
+	
+	$mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
+
+	if(!$mysqli || $mysqli->connect_errno)
+	{
+		echo "Connection error" . $mysqli->connect_errno . " " . $mysqli->connect_error;
+	}
+
+	if (!($stmt = $mysqli->prepare("DELETE FROM videoInventory")))
+	{
+		echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+	}
+
+	if (!$stmt->execute())
+	{
+		echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+
+	$stmt->close();
+
+	header('Location: http://web.engr.oregonstate.edu/~leonardb/PastAssignments/Assignment4-part2/phpMySQL.php');
+}
 
 
 ?>

@@ -38,7 +38,10 @@ else
 }
 
 
-//db connection
+
+
+
+//open db connection
 $mysqli = new mysqli("oniddb.cws.oregonstate.edu","leonardb-db","rYW5PXXTrTvbnJGI", "leonardb-db");
 
 if(!$mysqli || $mysqli->connect_errno)
@@ -47,7 +50,6 @@ if(!$mysqli || $mysqli->connect_errno)
 }
 
 // sql query for dropdown filter
-
 if (!($stmt = $mysqli->prepare("SELECT category FROM videoInventory")))
 {
 	echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -62,6 +64,10 @@ $resultFilter = null;
 
 $stmt->bind_result($resultFilter);
 
+
+
+
+
 //dropdown filter
 
 echo '<form method="GET" action="phpMySQL.php"> <select name="filter"><option selected> ALL </option>';
@@ -73,6 +79,10 @@ while($stmt->fetch())
 echo '</select><input type="submit" value="FILTER"></form><br>';
 
 $stmt->close();
+
+
+
+
 
 //sql query for data table
 
@@ -114,6 +124,11 @@ $resultRented = null;
 
 $stmt->bind_result($resultName, $resultCategory, $resultLength, $resultRented);
 
+
+
+
+
+//generate table based on database call
 echo '<table border="1">
 		<tr><th> Name <th> Category <th> Length <th> Rented <th> Rent <th> Delete';
 
@@ -137,6 +152,16 @@ echo '</table>';
 $stmt->close();
 
 ?>
+
+<?php
+//delete all button
+echo '<br><br>';
+echo ' <form action="upload.php" method="GET"><input type="hidden" name="deleteAll" value ="true"> <input type="submit" value="DELETE ALL"></form>';
+?>
+
+
+
+
 
 <?php
 //close html tags
